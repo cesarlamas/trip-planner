@@ -1,21 +1,45 @@
-import Trip, {ITrip} from "../models/trip";
+import { TripModel } from '../models/tripModel';
 
-export async function addTrip(origin: string, destination: string, duration: number, cost: number,  type: string, display_name: string): Promise<any> {
-  try {
-    const newTrip: ITrip = await Trip.create({origin, destination, duration, cost, type, display_name});
-    return newTrip;
-  } catch (error) {
-    console.log('error in the repositorys', error);
-    throw error;
+class TripManagerRepository {
+  async saveNewTrip(
+    origin: string,
+    destination: string,
+    duration: number,
+    cost: number,
+    type: string,
+    display_name: string
+  ) {
+    try {
+      return await TripModel.create({
+        origin,
+        destination,
+        duration,
+        cost,
+        type,
+        display_name,
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getAllSavedTrips() {
+    try {
+      return await TripModel.find({ isDeleted: false });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async softDeleteSavedTrip(id: string) {
+    try {
+      await TripModel.findByIdAndUpdate(id, { isDeleted: true });
+    } catch (error) {
+      throw error;
+    }
   }
 }
 
-export async function getAllSavedTrips(): Promise<ITrip[]> {
-  try {
-    const savedTrips: ITrip[] = await Trip.find();
-    return savedTrips;
-  } catch (error) {
-    console.log('error getting saved trips');
-    throw error;
-  }
-}
+const tripManagerRepository: TripManagerRepository =
+  new TripManagerRepository();
+export default tripManagerRepository;
