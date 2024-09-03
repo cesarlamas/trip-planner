@@ -1,4 +1,5 @@
 import tripManagerRepository from '../repositories-services/trip-manager.repositor-service';
+import { Trip } from '../models/tripModel';
 
 class TripManagerService {
   async saveNewTrip(
@@ -8,39 +9,29 @@ class TripManagerService {
     cost: number,
     type: string,
     display_name: string
-  ) {
-    try {
-      const newTrip: any = await tripManagerRepository.saveNewTrip(
-        origin,
-        destination,
-        duration,
-        cost,
-        type,
-        display_name
-      );
-      return newTrip;
-    } catch (e) {
-      throw e;
-    }
+  ): Promise<Trip> {
+    return tripManagerRepository.saveNewTrip(
+      origin,
+      destination,
+      duration,
+      cost,
+      type,
+      display_name
+    );
   }
 
-  async getAllSavedTrips() {
-    try {
-      const savedAllTrips: any = await tripManagerRepository.getAllSavedTrips();
-      return savedAllTrips;
-    } catch (error) {
-      throw error;
-    }
+  async getAllSavedTrips(): Promise<Trip[]> {
+    return tripManagerRepository.getAllSavedTrips();
   }
 
-  async softDeleteSavedTrips(id: string) {
-    try {
-      return await tripManagerRepository.softDeleteSavedTrip(id);
-    } catch (error) {
-      throw error;
-    }
+  async softDeleteSavedTrip(id: string): Promise<Trip | null> {
+    return tripManagerRepository.softDeleteSavedTrip(id);
+  }
+
+  async restoreDeletedTrip(id: string): Promise<Trip | null> {
+    return tripManagerRepository.restoreDeletedTrips(id);
   }
 }
 
-const tripManagerService: TripManagerService = new TripManagerService();
-export default tripManagerService;
+// Directly export the class to allow easy instantiation and testing
+export default new TripManagerService();
