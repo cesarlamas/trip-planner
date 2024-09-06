@@ -9,7 +9,7 @@ export function sortTrips(trips: any[], sortBy: string): any[] {
 
 export function filterByTransportType(trips: any[], type?: string) {
   if (type) {
-    return trips.filter((trip => trip.type === type));
+    return trips.filter((trip) => trip.type === type);
   }
   return trips;
-};
+}
