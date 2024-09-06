@@ -14,6 +14,7 @@ describe('TripController', () => {
     };
 
     const response = await request(app).post('/trips').send(tripData);
+    console.log(response);
 
     expect(response.statusCode).toBe(201);
     expect(response.body.data).toMatchObject(tripData);
