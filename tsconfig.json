@@ -1,14 +1,22 @@
 {
   "compilerOptions": {
-    "target": "ES6",                          // Compile to ES6 for modern syntax
-    "module": "commonjs",                     // Node.js uses CommonJS
-    "rootDir": "./src",                       // Source files location
-    "outDir": "./dist",                       // Compiled JavaScript output
-    "strict": true,                           // Enable all strict type-checking options
-    "esModuleInterop": true,                  // Import compatibility for CommonJS
-    "skipLibCheck": true,                     // Skip type checking of declaration files
-    "forceConsistentCasingInFileNames": true  // Enforce consistent file casing
+    "target": "ES6", // Compile to ES6 for modern syntax
+    "module": "commonjs", // Node.js uses CommonJS
+    "rootDir": "./src", // Source files location
+    "outDir": "./dist", // Compiled JavaScript output
+    "strict": true, // Enable all strict type-checking options
+    "esModuleInterop": true, // Import compatibility for CommonJS
+    "skipLibCheck": true, // Skip type checking of declaration files
+    "forceConsistentCasingInFileNames": true, // Enforce consistent file casing
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "strictPropertyInitialization": false
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "**/*.spec.ts"]
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
+  ]
 }
