@@ -19,7 +19,7 @@ class TripManagerController {
     ) {
       const msg =
         'Missing required parameter trip ==> origin, destination, duration, cost, type, display_name is required';
-      return this.endpointResponseService.sendBadRequest(res, [], msg);
+      return endpointResponseService.sendBadRequest(res, [], msg);
     }
 
     try {
@@ -31,22 +31,22 @@ class TripManagerController {
         type,
         display_name
       );
-      return this.endpointResponseService.sendCreated(res, [], savedTrip);
+      return endpointResponseService.sendCreated(res, [], savedTrip);
     } catch (error) {
       console.error('Error saving new trip:', error);
       const msg = 'Error saving new trip';
-      return this.endpointResponseService.sendNOk(res, [], msg);
+      return endpointResponseService.sendNOk(res, [], msg);
     }
   }
 
   async getAllSavedTrips(req: Request, res: Response) {
     try {
       const savedTrips = await tripManagerService.getAllSavedTrips();
-      return this.endpointResponseService.sendOk(res, [], savedTrips);
+      return endpointResponseService.sendOk(res, [], savedTrips);
     } catch (error) {
       console.error('Error getting saved trips:', error);
       const msg = 'Error getting saved trips';
-      return this.endpointResponseService.sendNOk(res, [], msg);
+      return endpointResponseService.sendNOk(res, [], msg);
     }
   }
 
@@ -55,17 +55,17 @@ class TripManagerController {
 
     if (!id) {
       const msg = 'Missing id field parameter';
-      return this.endpointResponseService.sendBadRequest(res, [], msg);
+      return endpointResponseService.sendBadRequest(res, [], msg);
     }
 
     try {
       await tripManagerService.softDeleteSavedTrip(id);
       const msg = 'Saved Trip Deleted';
-      return this.endpointResponseService.sendOk(res, [], msg);
+      return endpointResponseService.sendOk(res, [], msg);
     } catch (error) {
       console.error('Error deleting trip:', error);
       const msg = 'Error deleting trip';
-      return this.endpointResponseService.sendNOk(res, [], msg);
+      return endpointResponseService.sendNOk(res, [], msg);
     }
   }
 
@@ -74,17 +74,17 @@ class TripManagerController {
 
     if (!id) {
       const msg = 'Missing id field parameter';
-      return this.endpointResponseService.sendBadRequest(res, [], msg);
+      return endpointResponseService.sendBadRequest(res, [], msg);
     }
 
     try {
       await tripManagerService.restoreDeletedTrip(id);
       const msg = 'Deleted trip restored';
-      return this.endpointResponseService.sendOk(res, [], msg);
+      return endpointResponseService.sendOk(res, [], msg);
     } catch (error) {
       console.error('Error restoring trip:', error);
       const msg = 'Error restoring trip';
-      return this.endpointResponseService.sendNOk(res, [], msg);
+      return endpointResponseService.sendNOk(res, [], msg);
     }
   }
 }

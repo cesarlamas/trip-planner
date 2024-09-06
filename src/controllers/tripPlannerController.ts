@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import tripPlannerService from '../services/tripService';
+import tripPlannerService from '../services/tripPlannerService';
 import EndpointResponseService from '../services/endpointResponseService';
 
 const endpointResponseService: EndpointResponseService =

@@ -1,10 +1,10 @@
 import express from 'express';
-import tripPlannerController from '../controllers/tripController';
+import tripPlannerController from '../controllers/tripPlannerController';
 import tripManagerController from '../controllers/tripManagerController';
 
 const router = express.Router();
 
-// Trip Planner Routes
+// **************************** TRIP PLANNER ROUTES ********************************
 
 /**
  * @swagger
@@ -24,7 +24,7 @@ const router = express.Router();
  */
 router.get('/trips', tripPlannerController.getTrips);
 
-// Trip Manager Routes
+// **************************** TRIP MANAGER ROUTES ********************************
 
 /**
  * @swagger

@@ -1,15 +1,16 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import tripsRouter from './routes/trips';
-import { connectDB } from '../src/models/db';
 import router from './routes/trips';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
-
+import { connectDB } from './config/db';
 const app = express();
 
+const mongoUri: string = 'mongodb://localhost:27017/trip-service';
+
 dotenv.config();
-connectDB();
+connectDB(mongoUri);
 
 // Swagger connection and info
 const options = {
@@ -39,3 +40,5 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
+
+export default app;
