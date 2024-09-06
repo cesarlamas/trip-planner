@@ -25,4 +25,3 @@ export class NotOkEndpointResponse extends EndpointResponse {
     super('nok', params, data, msg, beautyMsg);
   }
 }
-

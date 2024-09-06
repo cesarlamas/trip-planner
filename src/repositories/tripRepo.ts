@@ -1,14 +1,7 @@
 import { Types } from 'mongoose';
 import { TripModel, Trip } from '../models/tripModel';
 export class TripManagerRepository {
-  async saveNewTrip(
-    origin: string,
-    destination: string,
-    duration: number,
-    cost: number,
-    type: string,
-    display_name: string
-  ): Promise<Trip> {
+  async saveNewTrip(origin: string, destination: string, duration: number, cost: number, type: string, display_name: string): Promise<Trip> {
     try {
       return await TripModel.create({
         origin,
@@ -32,7 +25,7 @@ export class TripManagerRepository {
   }
 
   async getTripByOriginAndDestination(origin: string, destination: string): Promise<Trip[]> {
-    return await TripModel.find({ origin: origin, destination });
+    return await TripModel.find({ origin: origin, destination: destination, isDeleted: false });
   }
 
   async softDeleteSavedTrip(id: string): Promise<Trip | null> {

@@ -19,6 +19,22 @@ describe('TripController', () => {
     expect(response.body.data).toMatchObject(tripData);
   });
 
+  it('Should fail to save a new Trip if the trip is already created', async () => {
+    const tripData = {
+      origin: 'OSL',
+      destination: 'ZRH',
+      duration: 1,
+      cost: 1405,
+      type: 'train',
+      display_name: 'from OSL to ZRH by train',
+    };
+
+    const response = await request(app).post('/trips').send(tripData);
+
+    expect(response.statusCode).toBe(403);
+    expect(response.body.data).toMatchObject(tripData);
+  });
+
   it('Should fail to save a new trip if a missing parameter is required', async () => {
     const tripData = {
       origin: 'OSL',

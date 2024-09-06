@@ -14,12 +14,7 @@ class TripPlannerController {
     }
 
     try {
-      const trips = await tripPlannerService.getTrips(
-        origin as string,
-        destination as string,
-        sort_by as string,
-        type as string
-      );
+      const trips = await tripPlannerService.getTrips(origin as string, destination as string, sort_by as string, type as string);
       return endpointResponseService.sendOk(res, [], trips);
     } catch (e) {
       const msg: string = 'Error on getting trips => No trips where found';
