@@ -19,8 +19,7 @@ const options = {
     info: {
       title: 'Trip Planner API',
       version: '1.0.0',
-      description:
-        'API documentation for the Trip Planner and Trip Manager services.',
+      description: 'API documentation for the Trip Planner and Trip Manager services.',
     },
     schemes: ['http', 'https'],
     servers: [{ url: 'http://localhost:3000/' }],

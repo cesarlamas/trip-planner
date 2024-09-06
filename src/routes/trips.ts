@@ -1,6 +1,6 @@
 import express from 'express';
-import tripPlannerController from '../controllers/tripPlannerController';
-import tripManagerController from '../controllers/tripManagerController';
+import tripPlannerController from '../controllers/tripPlanner';
+import tripManagerController from '../controllers/tripManager';
 
 const router = express.Router();
 
@@ -98,9 +98,7 @@ router.put('/trips/saved/:id', tripManagerController.softDeleteSavedTrip); // So
  *       200:
  *         description: Trip restored successfully.
  */
-router.put(
-  '/trips/saved/:id/restore',
-  tripManagerController.restoreDeletedTrip
-); // Restore a soft-deleted trip
+router.put('/trips/saved/:id/restore', tripManagerController.restoreDeletedTrip); // Restore a soft-deleted trip
 
 export default router;
+

@@ -41,3 +41,4 @@ export class Trip {
 }
 
 export const TripModel = getModelForClass(Trip);
+
