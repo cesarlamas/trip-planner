@@ -31,4 +31,3 @@ class TripPlannerService {
 
 const tripPlannerService: TripPlannerService = new TripPlannerService();
 export default tripPlannerService;
-

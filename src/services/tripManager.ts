@@ -2,14 +2,7 @@ import tripManagerRepository from '../repositories/tripRepo';
 import { Trip } from '../models/tripModel';
 
 class TripManagerService {
-  async saveNewTrip(
-    origin: string,
-    destination: string,
-    duration: number,
-    cost: number,
-    type: string,
-    display_name: string
-  ): Promise<Trip> {
+  async saveNewTrip(origin: string, destination: string, duration: number, cost: number, type: string, display_name: string): Promise<Trip> {
     return tripManagerRepository.saveNewTrip(origin, destination, duration, cost, type, display_name);
   }
 

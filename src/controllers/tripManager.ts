@@ -9,8 +9,7 @@ class TripManagerController {
     const { origin, destination, duration, cost, type, display_name } = req.body;
 
     if (!origin || !destination || !duration || !cost || !type || !display_name) {
-      const msg =
-        'Missing required parameter trip ==> origin, destination, duration, cost, type, display_name is required';
+      const msg = 'Missing required parameter trip ==> origin, destination, duration, cost, type, display_name is required';
       return endpointResponseService.sendBadRequest(res, [], msg);
     }
 
