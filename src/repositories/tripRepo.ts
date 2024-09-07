@@ -33,7 +33,6 @@ export class TripManagerRepository {
       const objectId = new Types.ObjectId(id);
       const result = await TripModel.findByIdAndUpdate(objectId, { isDeleted: true }, { new: true });
       if (!result) {
-        console.warn(`Trip with id ${id} not found`);
         throw new Error('Trip not found');
       }
       return result;
@@ -47,7 +46,6 @@ export class TripManagerRepository {
       const objectId = new Types.ObjectId(id);
       const result = await TripModel.findByIdAndUpdate(objectId, { isDeleted: false }, { new: true });
       if (!result) {
-        console.warn(`Trip with id ${id} not found`);
         throw new Error('Trip not found');
       }
       return result;

@@ -11,6 +11,11 @@ class TripManagerController {
       return res.status(400).json({ message: msg });
     }
 
+    if (origin.length !== 3 || destination.length !== 3) {
+      const msg: string = 'Origin or destination airport not known';
+      return res.status(400).json({ message: msg });
+    }
+
     try {
       const tripAlreadyExists: Trip[] | null = await tripManagerService.getTripByOriginAndDestination(origin, destination);
 
@@ -37,7 +42,7 @@ class TripManagerController {
 
       if (!savedTrips || savedTrips.length === 0) {
         return res.status(200).json({
-          message: 'No trips saved',
+          message: 'No saved trips',
           data: [],
         });
       }
