@@ -14,9 +14,8 @@ describe('TripController', () => {
     };
 
     const response = await request(app).post('/trips').send(tripData);
-    console.log(response);
 
-    expect(response.statusCode).toBe(201);
+    expect(response.status).toBe(201);
     expect(response.body.data).toMatchObject(tripData);
   });
 
@@ -31,9 +30,10 @@ describe('TripController', () => {
     };
 
     const response = await request(app).post('/trips').send(tripData);
+    console.log(response.body.message);
 
-    expect(response.statusCode).toBe(403);
-    expect(response.body.data).toMatchObject(tripData);
+    expect(response.status).toBe(403);
+    expect(response.body.message).toBe('Trip already exists');
   });
 
   it('Should fail to save a new trip if a missing parameter is required', async () => {
@@ -46,8 +46,8 @@ describe('TripController', () => {
 
     const response = await request(app).post('/trips').send(tripData);
 
-    expect(response.statusCode).toBe(400);
-    expect(response.body.status).toBe('nok');
+    expect(response.status).toBe(400);
+    expect(response.body.message).toBe('nok');
   });
 
   it('Should fail to save a new trip if a parameter is not of the correct Type (cost: string)', async () => {

@@ -1,41 +1,56 @@
 import { Request, Response } from 'express';
 import tripManagerService from '../services/tripManager';
-import EndpointResponseService from '../services/endpointResponse';
+import { Trip } from '../models/tripModel';
 
 class TripManagerController {
-  constructor(private endpointResponseService: EndpointResponseService) {}
-
   async saveTrip(req: Request, res: Response) {
     const { origin, destination, duration, cost, type, display_name } = req.body;
 
     if (!origin || !destination || !duration || !cost || !type || !display_name) {
-      const msg = 'Missing required parameter trip ==> origin, destination, duration, cost, type, display_name is required';
-      return endpointResponseService.sendBadRequest(res, [], msg);
-    }
-
-    const tripAlreadyExists = await tripManagerService.getTripByOriginAndDestination(origin, destination);
-    if (tripAlreadyExists) {
-      return res.json(403);
+      const msg: string = 'Missing required parameter trip ==> origin, destination, duration, cost, type, display_name is required';
+      return res.status(400).json({ message: msg });
     }
 
     try {
+      const tripAlreadyExists: Trip[] | null = await tripManagerService.getTripByOriginAndDestination(origin, destination);
+
+      if (tripAlreadyExists && tripAlreadyExists.length > 0) {
+        return res.status(409).json({ message: 'Trip already exists' }); // 409 Conflict for existing trip
+      }
+
       const savedTrip = await tripManagerService.saveNewTrip(origin, destination, duration, cost, type, display_name);
-      return endpointResponseService.sendCreated(res, [], savedTrip);
+      return res.status(201).json({
+        message: 'New trip saved',
+        data: savedTrip,
+      });
     } catch (error) {
-      console.error('Error saving new trip:', error);
-      const msg = 'Error saving new trip';
-      return endpointResponseService.sendNOk(res, [], msg);
+      console.error('Error saving trip:', error);
+      return res.status(500).json({
+        message: `Unable to save a new trip`,
+      });
     }
   }
 
   async getAllSavedTrips(req: Request, res: Response) {
     try {
-      const savedTrips = await tripManagerService.getAllSavedTrips();
-      return endpointResponseService.sendOk(res, [], savedTrips);
+      const savedTrips: Trip[] | null = await tripManagerService.getAllSavedTrips();
+
+      if (!savedTrips || savedTrips.length === 0) {
+        return res.status(200).json({
+          message: 'No trips saved',
+          data: [],
+        });
+      }
+
+      return res.status(200).json({
+        message: 'Retrieving saved trips',
+        data: savedTrips,
+      });
     } catch (error) {
-      console.error('Error getting saved trips:', error);
-      const msg = 'Error getting saved trips';
-      return endpointResponseService.sendNOk(res, [], msg);
+      console.error('Error retrieving trips:', error);
+      return res.status(500).json({
+        message: `Unable to retrieve saved trips`,
+      });
     }
   }
 
@@ -44,17 +59,19 @@ class TripManagerController {
 
     if (!id) {
       const msg = 'Missing id field parameter';
-      return endpointResponseService.sendBadRequest(res, [], msg);
+      return res.status(400).json({ message: msg });
     }
 
     try {
       await tripManagerService.softDeleteSavedTrip(id);
-      const msg = 'Saved Trip Deleted';
-      return endpointResponseService.sendOk(res, [], msg);
+      return res.status(200).json({
+        message: 'Saved Trip Deleted',
+      });
     } catch (error) {
       console.error('Error deleting trip:', error);
-      const msg = 'Error deleting trip';
-      return endpointResponseService.sendNOk(res, [], msg);
+      return res.status(500).json({
+        message: 'Error deleting trip',
+      });
     }
   }
 
@@ -63,22 +80,22 @@ class TripManagerController {
 
     if (!id) {
       const msg = 'Missing id field parameter';
-      return endpointResponseService.sendBadRequest(res, [], msg);
+      return res.status(400).json({ message: msg });
     }
 
     try {
       await tripManagerService.restoreDeletedTrip(id);
-      const msg = 'Deleted trip restored';
-      return endpointResponseService.sendOk(res, [], msg);
+      return res.status(200).json({
+        message: 'Deleted trip restored',
+      });
     } catch (error) {
       console.error('Error restoring trip:', error);
-      const msg = 'Error restoring trip';
-      return endpointResponseService.sendNOk(res, [], msg);
+      return res.status(500).json({
+        message: 'Error restoring trip',
+      });
     }
   }
 }
 
-// Create an instance of EndpointResponseService to inject
-const endpointResponseService = new EndpointResponseService();
-const tripManagerController = new TripManagerController(endpointResponseService);
+const tripManagerController = new TripManagerController();
 export default tripManagerController;
