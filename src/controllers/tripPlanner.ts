@@ -1,27 +1,36 @@
 import { Request, Response } from 'express';
 import tripPlannerService from '../services/tripPlanner';
-import EndpointResponseService from '../services/endpointResponse';
-
-const endpointResponseService: EndpointResponseService = new EndpointResponseService();
-
 class TripPlannerController {
   async getTrips(req: Request, res: Response) {
     const { origin, destination, sort_by, type } = req.query;
 
     if (!origin || !destination) {
-      const msg: string = 'Error on Getting trips. origin or destination are undefined';
-      return endpointResponseService.sendNOk(res, [], msg);
+      const msg = 'Error: origin and destination are required';
+      return res.status(400).json({ message: msg });
     }
 
     try {
       const trips = await tripPlannerService.getTrips(origin as string, destination as string, sort_by as string, type as string);
-      return endpointResponseService.sendOk(res, [], trips);
-    } catch (e) {
-      const msg: string = 'Error on getting trips => No trips where found';
-      return endpointResponseService.sendNOk(res, [], msg);
+
+      if (!trips || trips.length === 0) {
+        return res.status(404).json({
+          message: 'No trips found',
+          data: [],
+        });
+      }
+
+      return res.status(200).json({
+        message: 'Trips retrieved successfully',
+        data: trips,
+      });
+    } catch (error) {
+      console.error('Error getting trips:', error);
+      return res.status(500).json({
+        message: 'Error retrieving trips',
+      });
     }
   }
 }
 
-const tripPlannerController: TripPlannerController = new TripPlannerController();
+const tripPlannerController = new TripPlannerController();
 export default tripPlannerController;

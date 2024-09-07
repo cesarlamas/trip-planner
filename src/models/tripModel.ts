@@ -4,6 +4,7 @@ import { getModelForClass, modelOptions, prop } from '@typegoose/typegoose';
 @modelOptions({
   schemaOptions: {
     timestamps: true,
+    versionKey: false,
   },
 })
 export class Trip {
@@ -41,4 +42,3 @@ export class Trip {
 }
 
 export const TripModel = getModelForClass(Trip);
-
