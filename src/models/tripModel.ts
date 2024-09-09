@@ -29,7 +29,7 @@ export class Trip {
   public type!: string;
 
   @IsString()
-  @prop({ required: true })
+  @prop()
   public display_name!: string;
 
   @IsBoolean()

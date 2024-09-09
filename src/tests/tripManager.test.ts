@@ -9,7 +9,6 @@ const tripData1 = {
   duration: 100,
   cost: 1405,
   type: 'train',
-  display_name: 'from OSL to ZRH by train',
 };
 
 const tripData2 = {
@@ -18,7 +17,6 @@ const tripData2 = {
   duration: 75,
   cost: 870,
   type: 'car',
-  display_name: 'from OSL to ZRH by train',
 };
 
 describe('TripManager', () => {
@@ -45,7 +43,6 @@ describe('TripManager', () => {
         duration: 1,
         cost: 1405,
         type: 'train',
-        display_name: 'from OSL to ZRH by train',
       };
 
       const response = await request(app).post('/trips').send(tripData);
@@ -61,7 +58,6 @@ describe('TripManager', () => {
         duration: 1,
         cost: 1405,
         type: 'train',
-        display_name: 'from OSL to ZRH by train',
       };
 
       const response = await request(app).post('/trips').send(tripData);
@@ -76,13 +72,12 @@ describe('TripManager', () => {
         duration: 1,
         cost: 1405,
         type: 'train',
-        display_name: 'from OSL to ZRH by train',
       };
 
       const response = await request(app).post('/trips').send(tripData);
 
       expect(response.status).toBe(400);
-      expect(response.body.message).toBe('Missing required parameter trip ==> origin, destination, duration, cost, type, display_name is required');
+      expect(response.body.message).toBe('Missing required parameter trip ==> origin, destination, duration, cost, type is required');
     });
 
     it('should return 400 when destination is missing', async () => {
@@ -91,13 +86,12 @@ describe('TripManager', () => {
         duration: 1,
         cost: 1405,
         type: 'train',
-        display_name: 'from OSL to ZRH by train',
       };
 
       const response = await request(app).post('/trips').send(tripData);
 
       expect(response.status).toBe(400);
-      expect(response.body.message).toBe('Missing required parameter trip ==> origin, destination, duration, cost, type, display_name is required');
+      expect(response.body.message).toBe('Missing required parameter trip ==> origin, destination, duration, cost, type is required');
     });
 
     it('should return 400 when duration is missing', async () => {
@@ -106,13 +100,12 @@ describe('TripManager', () => {
         destination: 'ZRH',
         cost: 1405,
         type: 'train',
-        display_name: 'from OSL to ZRH by train',
       };
 
       const response = await request(app).post('/trips').send(tripData);
 
       expect(response.status).toBe(400);
-      expect(response.body.message).toBe('Missing required parameter trip ==> origin, destination, duration, cost, type, display_name is required');
+      expect(response.body.message).toBe('Missing required parameter trip ==> origin, destination, duration, cost, type is required');
     });
 
     it('should return 400 when cost is missing', async () => {
@@ -121,13 +114,12 @@ describe('TripManager', () => {
         destination: 'ZRH',
         duration: 1,
         type: 'train',
-        display_name: 'from OSL to ZRH by train',
       };
 
       const response = await request(app).post('/trips').send(tripData);
 
       expect(response.status).toBe(400);
-      expect(response.body.message).toBe('Missing required parameter trip ==> origin, destination, duration, cost, type, display_name is required');
+      expect(response.body.message).toBe('Missing required parameter trip ==> origin, destination, duration, cost, type is required');
     });
 
     it('should return 400 when type is missing', async () => {
@@ -136,28 +128,12 @@ describe('TripManager', () => {
         destination: 'ZRH',
         duration: 1,
         cost: 1405,
-        display_name: 'from OSL to ZRH by train',
       };
 
       const response = await request(app).post('/trips').send(tripData);
 
       expect(response.status).toBe(400);
-      expect(response.body.message).toBe('Missing required parameter trip ==> origin, destination, duration, cost, type, display_name is required');
-    });
-
-    it('should return 400 when display_name is missing', async () => {
-      const tripData = {
-        origin: 'OSL',
-        destination: 'ZRH',
-        duration: 1,
-        cost: 1405,
-        type: 'train',
-      };
-
-      const response = await request(app).post('/trips').send(tripData);
-
-      expect(response.status).toBe(400);
-      expect(response.body.message).toBe('Missing required parameter trip ==> origin, destination, duration, cost, type, display_name is required');
+      expect(response.body.message).toBe('Missing required parameter trip ==> origin, destination, duration, cost, type is required');
     });
 
     it('should return 400 when origin is not a string', async () => {
@@ -167,7 +143,6 @@ describe('TripManager', () => {
         duration: 1,
         cost: 1405,
         type: 'train',
-        display_name: 'from OSL to ZRH by train',
       };
 
       const response = await request(app).post('/trips').send(tripData);
@@ -183,7 +158,6 @@ describe('TripManager', () => {
         duration: 1,
         cost: 1405,
         type: 'train',
-        display_name: 'from OSL to ZRH by train',
       };
 
       const response = await request(app).post('/trips').send(tripData);

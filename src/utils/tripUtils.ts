@@ -13,3 +13,7 @@ export function filterByTransportType(trips: any[], type?: string) {
   }
   return trips;
 }
+
+export function createDisplayName(origin: string, destination: string, type: string): string {
+  return `from ${origin} to ${destination} by ${type}`;
+}

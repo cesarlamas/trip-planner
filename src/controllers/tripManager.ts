@@ -1,13 +1,14 @@
 import { Request, Response } from 'express';
 import tripManagerService from '../services/tripManager';
 import { Trip } from '../models/tripModel';
+import { createDisplayName } from '../utils/tripUtils';
 
 class TripManagerController {
   async saveTrip(req: Request, res: Response) {
-    const { origin, destination, duration, cost, type, display_name } = req.body;
+    const { origin, destination, duration, cost, type } = req.body;
 
-    if (!origin || !destination || !duration || !cost || !type || !display_name) {
-      const msg: string = 'Missing required parameter trip ==> origin, destination, duration, cost, type, display_name is required';
+    if (!origin || !destination || !duration || !cost || !type) {
+      const msg: string = 'Missing required parameter trip ==> origin, destination, duration, cost, type is required';
       return res.status(400).json({ message: msg });
     }
 
@@ -15,6 +16,8 @@ class TripManagerController {
       const msg: string = 'Origin or destination airport not known';
       return res.status(400).json({ message: msg });
     }
+
+    const display_name: string = createDisplayName(origin, destination, type);
 
     try {
       const tripAlreadyExists: Trip[] | null = await tripManagerService.getTripByOriginAndDestination(origin, destination);
@@ -62,11 +65,8 @@ class TripManagerController {
   async softDeleteSavedTrip(req: Request, res: Response) {
     const { id } = req.params;
 
-    console.log('this is the id', id);
-
     if (!id) {
       const msg = 'Missing id field parameter';
-      console.log('heeere');
       return res.status(400).json({ message: msg });
     }
 
@@ -76,7 +76,6 @@ class TripManagerController {
         message: 'Saved Trip Deleted',
       });
     } catch (error) {
-      console.error('Error deleting trip:', error);
       return res.status(500).json({
         message: 'Error deleting trip',
       });

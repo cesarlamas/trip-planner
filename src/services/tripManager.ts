@@ -23,5 +23,4 @@ class TripManagerService {
   }
 }
 
-// Directly export the class to allow easy instantiation and testing
 export default new TripManagerService();
