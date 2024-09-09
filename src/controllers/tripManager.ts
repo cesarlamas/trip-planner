@@ -62,8 +62,11 @@ class TripManagerController {
   async softDeleteSavedTrip(req: Request, res: Response) {
     const { id } = req.params;
 
+    console.log('this is the id', id);
+
     if (!id) {
       const msg = 'Missing id field parameter';
+      console.log('heeere');
       return res.status(400).json({ message: msg });
     }
 

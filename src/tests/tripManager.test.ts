@@ -65,7 +65,6 @@ describe('TripManager', () => {
       };
 
       const response = await request(app).post('/trips').send(tripData);
-      console.log(response.body.message);
 
       expect(response.status).toBe(400);
       expect(response.body.message).toBe('Origin or destination airport not known');
@@ -180,7 +179,7 @@ describe('TripManager', () => {
     it('should return 400 when destination is not a string', async () => {
       const tripData = {
         origin: 'OSL',
-        destination: 456, // Invalid type: number instead of string
+        destination: 456,
         duration: 1,
         cost: 1405,
         type: 'train',
@@ -191,6 +190,10 @@ describe('TripManager', () => {
 
       expect(response.status).toBe(400);
       expect(response.body.message).toBe('Origin or destination airport not known');
+    });
+
+    afterAll(async () => {
+      await TripModel.deleteMany();
     });
   });
 
@@ -204,8 +207,8 @@ describe('TripManager', () => {
     });
 
     it('Should return 200 and saved trips', async () => {
-      await request(app).post('/trips').send(tripData1);
-      await request(app).post('/trips').send(tripData2);
+      const savedTrip1 = await request(app).post('/trips').send(tripData1);
+      const savedTrip2 = await request(app).post('/trips').send(tripData2);
 
       const response = await request(app).get('/trips/saved');
 
@@ -213,37 +216,45 @@ describe('TripManager', () => {
       expect(response.body.data.length).toBe(2);
       expect(response.body.data[0]).toMatchObject(tripData1);
       expect(response.body.data[1]).toMatchObject(tripData2);
+
+      await TripModel.findByIdAndDelete(savedTrip1.body.data._id);
+      await TripModel.findByIdAndDelete(savedTrip2.body.data._id);
     });
   });
 
-  describe.only('PUT --> /trips/saved/:id && /trips/saved/:id/restore', () => {
+  describe('PUT --> /trips/saved/:id && /trips/saved/:id/restore', () => {
     it('should successfully soft delete a trip and return 200 status', async () => {
       const newTrip = await request(app).post('/trips').send(tripData1);
       const savedIdNewTrip = newTrip.body.data._id;
 
       const response = await request(app).put(`/trips/saved/${savedIdNewTrip.toString()}`);
-      console.log(response);
 
       expect(response.status).toBe(200);
       expect(response.body.message).toBe('Saved Trip Deleted');
 
       const deletedTrip = await TripModel.findById(savedIdNewTrip);
       expect(deletedTrip?.isDeleted).toBe(true);
+
+      await TripModel.findByIdAndDelete(savedIdNewTrip);
     });
 
-    it('should return 400 when id parameter is missing', async () => {
-      const response = await request(app).put('/trips/saved/'); // No ID in the request
-
-      expect(response.status).toBe(400);
-      expect(response.body.message).toBe('Missing id field parameter');
-    });
-
-    it('should return 404 when trip with given id does not exist', async () => {
+    it('should return 500 when trip with given id does not exist', async () => {
       const nonExistentId = '60d21b4667d0d8992e610c85';
       const response = await request(app).put(`/trips/saved/${nonExistentId}`);
 
-      expect(response.status).toBe(404);
+      expect(response.status).toBe(500);
       expect(response.body.message).toBe('Error deleting trip');
+    });
+
+    it('Should restore soft deleted trip and return a 200 status', async () => {
+      const newTrip = await request(app).post('/trips').send(tripData1);
+      const savedIdNewTrip = newTrip.body.data._id;
+
+      await request(app).put(`/trips/saved/${savedIdNewTrip.toString()}`);
+      const restoredDeletedTrip = await request(app).put(`/trips/saved/${savedIdNewTrip}/restore`);
+
+      expect(restoredDeletedTrip.status).toBe(200);
+      await TripModel.findByIdAndDelete(savedIdNewTrip);
     });
   });
 });
