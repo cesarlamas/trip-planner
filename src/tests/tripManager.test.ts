@@ -22,7 +22,7 @@ const tripData2 = {
 describe('TripManager', () => {
   describe('POST --> /trips', () => {
     it('Should save a new trip and return 201 status', async () => {
-      const response = await request(app).post('/trips').send(tripData1);
+      const response = await request(app).post('/trip').send(tripData1);
 
       expect(response.status).toBe(201);
       expect(response.body.message).toBe('New trip saved');
@@ -30,7 +30,7 @@ describe('TripManager', () => {
     });
 
     it('Should fail to save a new Trip if the trip is already created', async () => {
-      const response = await request(app).post('/trips').send(tripData1);
+      const response = await request(app).post('/trip').send(tripData1);
 
       expect(response.status).toBe(409);
       expect(response.body.message).toBe('Trip already exists');
@@ -45,7 +45,7 @@ describe('TripManager', () => {
         type: 'train',
       };
 
-      const response = await request(app).post('/trips').send(tripData);
+      const response = await request(app).post('/trip').send(tripData);
 
       expect(response.status).toBe(400);
       expect(response.body.message).toBe('Origin or destination airport not known');
@@ -60,7 +60,7 @@ describe('TripManager', () => {
         type: 'train',
       };
 
-      const response = await request(app).post('/trips').send(tripData);
+      const response = await request(app).post('/trip').send(tripData);
 
       expect(response.status).toBe(400);
       expect(response.body.message).toBe('Origin or destination airport not known');
@@ -74,7 +74,7 @@ describe('TripManager', () => {
         type: 'train',
       };
 
-      const response = await request(app).post('/trips').send(tripData);
+      const response = await request(app).post('/trip').send(tripData);
 
       expect(response.status).toBe(400);
       expect(response.body.message).toBe('Missing required parameter trip ==> origin, destination, duration, cost, type is required');
@@ -88,7 +88,7 @@ describe('TripManager', () => {
         type: 'train',
       };
 
-      const response = await request(app).post('/trips').send(tripData);
+      const response = await request(app).post('/trip').send(tripData);
 
       expect(response.status).toBe(400);
       expect(response.body.message).toBe('Missing required parameter trip ==> origin, destination, duration, cost, type is required');
@@ -102,7 +102,7 @@ describe('TripManager', () => {
         type: 'train',
       };
 
-      const response = await request(app).post('/trips').send(tripData);
+      const response = await request(app).post('/trip').send(tripData);
 
       expect(response.status).toBe(400);
       expect(response.body.message).toBe('Missing required parameter trip ==> origin, destination, duration, cost, type is required');
@@ -116,7 +116,7 @@ describe('TripManager', () => {
         type: 'train',
       };
 
-      const response = await request(app).post('/trips').send(tripData);
+      const response = await request(app).post('/trip').send(tripData);
 
       expect(response.status).toBe(400);
       expect(response.body.message).toBe('Missing required parameter trip ==> origin, destination, duration, cost, type is required');
@@ -130,7 +130,7 @@ describe('TripManager', () => {
         cost: 1405,
       };
 
-      const response = await request(app).post('/trips').send(tripData);
+      const response = await request(app).post('/trip').send(tripData);
 
       expect(response.status).toBe(400);
       expect(response.body.message).toBe('Missing required parameter trip ==> origin, destination, duration, cost, type is required');
@@ -145,7 +145,7 @@ describe('TripManager', () => {
         type: 'train',
       };
 
-      const response = await request(app).post('/trips').send(tripData);
+      const response = await request(app).post('/trip').send(tripData);
 
       expect(response.status).toBe(400);
       expect(response.body.message).toBe('Origin or destination airport not known');
@@ -160,7 +160,7 @@ describe('TripManager', () => {
         type: 'train',
       };
 
-      const response = await request(app).post('/trips').send(tripData);
+      const response = await request(app).post('/trip').send(tripData);
 
       expect(response.status).toBe(400);
       expect(response.body.message).toBe('Origin or destination airport not known');
@@ -181,8 +181,8 @@ describe('TripManager', () => {
     });
 
     it('Should return 200 and saved trips', async () => {
-      const savedTrip1 = await request(app).post('/trips').send(tripData1);
-      const savedTrip2 = await request(app).post('/trips').send(tripData2);
+      const savedTrip1 = await request(app).post('/trip').send(tripData1);
+      const savedTrip2 = await request(app).post('/trip').send(tripData2);
 
       const response = await request(app).get('/trips/saved');
 
@@ -196,12 +196,12 @@ describe('TripManager', () => {
     });
   });
 
-  describe('PUT --> /trips/saved/:id && /trips/saved/:id/restore', () => {
+  describe('PUT --> /trips/delete/:id && /trips/saved/:id/restore', () => {
     it('should successfully soft delete a trip and return 200 status', async () => {
-      const newTrip = await request(app).post('/trips').send(tripData1);
+      const newTrip = await request(app).post('/trip').send(tripData1);
       const savedIdNewTrip = newTrip.body.data._id;
 
-      const response = await request(app).put(`/trips/saved/${savedIdNewTrip.toString()}`);
+      const response = await request(app).put(`/trips/delete/${savedIdNewTrip.toString()}`);
 
       expect(response.status).toBe(200);
       expect(response.body.message).toBe('Saved Trip Deleted');
@@ -214,14 +214,14 @@ describe('TripManager', () => {
 
     it('should return 500 when trip with given id does not exist', async () => {
       const nonExistentId = '60d21b4667d0d8992e610c85';
-      const response = await request(app).put(`/trips/saved/${nonExistentId}`);
+      const response = await request(app).put(`/trips/delete/${nonExistentId}`);
 
       expect(response.status).toBe(500);
       expect(response.body.message).toBe('Error deleting trip');
     });
 
     it('Should restore soft deleted trip and return a 200 status', async () => {
-      const newTrip = await request(app).post('/trips').send(tripData1);
+      const newTrip = await request(app).post('/trip').send(tripData1);
       const savedIdNewTrip = newTrip.body.data._id;
 
       await request(app).put(`/trips/saved/${savedIdNewTrip.toString()}`);

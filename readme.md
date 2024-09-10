@@ -61,7 +61,7 @@ The app will be running in the port http://localhost:3000
 | `GET`  | `/trips`                   | Call external api and retrieve trips | Required: `origin` and `destination`                         |
 | `POST` | `/trips`                   | Create a new trip                    | Required:`origin`, `destination`, `duration`, `cost`, `type` |
 | `GET`  | `/trips/saved`             | Retrieve all saved trips             | None                                                         |
-| `PUT`  | `/trips/saved/:id`         | Soft delete a trip by ID             | Required:`id`                                                |
+| `PUT`  | `/trips/delete/:id`        | Soft delete a trip by ID             | Required:`id`                                                |
 | `PUT`  | `/trips/saved/:id/restore` | Restore a soft-deleted trip by ID    | Required:`id`                                                |
 
 ## Running tests

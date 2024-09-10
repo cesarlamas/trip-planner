@@ -31,8 +31,7 @@ const swaggerSpec = swaggerJSDoc(options);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use(express.json());
-app.use('/search', tripsRouter);
-app.use(router);
+app.use('/', tripsRouter);
 
 const PORT = process.env.PORT || 3000;
 
