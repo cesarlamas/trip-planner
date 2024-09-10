@@ -27,7 +27,7 @@ This is a RESTful API for managing trips. It allows users to create, retrieve, s
 
 ### 2. Install dependencies
 
-`npm i`
+`npm install`
 
 ### 3. Set environment variables
 
@@ -50,7 +50,7 @@ This command compiles your TypeScript code to JavaScript in the dist/ directory 
 
 After running the build, start your server:
 
-```npm start````
+`npm start`
 
 The app will be running in the port http://localhost:3000
 
@@ -68,7 +68,7 @@ The app will be running in the port http://localhost:3000
 
 To run the tests, use the following command:
 
-``npm test`
+`npm test`
 
 Test are created using Jest and Supertest for testing the Api endpoints.
 
