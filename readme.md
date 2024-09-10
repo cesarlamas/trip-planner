@@ -4,7 +4,7 @@ This is a RESTful API for managing trips. It allows users to create, retrieve, s
 
 ## Features
 
-1. Create Trip: Save a new trip with details like origin, destination, duration, cost and transport Type
+1. Create Trip: Save a new trip with details like origin, destination, duration, cost and transport Type.
 2. Retrieve Trips: Fetch all saved trips.
 3. Soft Delete Trip: Mark a trip as deleted without permanently removing it from the database.
 4. Restore Trip: Restore a soft-deleted trip.
@@ -22,7 +22,7 @@ This is a RESTful API for managing trips. It allows users to create, retrieve, s
 
 ### 1. Clone the repository
 
-` git clone https://github.com/cesarlamas/trip-planner.git`
+`git clone https://github.com/cesarlamas/trip-planner.git`
 `cd trip-planner-api`
 
 ### 2. Install dependencies
@@ -56,10 +56,29 @@ The app will be running in the port http://localhost:3000
 
 ## API Endpoints
 
-| Method | Endpoint                   | Description                          | Parameters                                                                   |
-| ------ | -------------------------- | ------------------------------------ | ---------------------------------------------------------------------------- |
-| `GET`  | `/trips`                   | Call external api and retrieve trips | Required: `origin` and `destination`                                         |
-| `POST` | `/trips`                   | Create a new trip                    | Required:`origin`, `destination`, `duration`, `cost`, `type`, `display_name` |
-| `GET`  | `/trips/saved`             | Retrieve all saved trips             | None                                                                         |
-| `PUT`  | `/trips/saved/:id`         | Soft delete a trip by ID             | Required:`id`                                                                |
-| `PUT`  | `/trips/saved/:id/restore` | Restore a soft-deleted trip by ID    | Required:`id`                                                                |
+| Method | Endpoint                   | Description                          | Parameters                                                   |
+| ------ | -------------------------- | ------------------------------------ | ------------------------------------------------------------ |
+| `GET`  | `/trips`                   | Call external api and retrieve trips | Required: `origin` and `destination`                         |
+| `POST` | `/trips`                   | Create a new trip                    | Required:`origin`, `destination`, `duration`, `cost`, `type` |
+| `GET`  | `/trips/saved`             | Retrieve all saved trips             | None                                                         |
+| `PUT`  | `/trips/saved/:id`         | Soft delete a trip by ID             | Required:`id`                                                |
+| `PUT`  | `/trips/saved/:id/restore` | Restore a soft-deleted trip by ID    | Required:`id`                                                |
+
+## Running tests
+
+To run the tests, use the following command:
+
+``npm test`
+
+Test are created using Jest and Supertest for testing the Api endpoints.
+
+## Technologies Used
+
+- Node.js: JavaScript runtime for building server-side applications.
+- Express: Fast, unopinionated, minimalist web framework for Node.js.
+- Typegoose: Mongoose-based library for working with MongoDB in a TypeScript-friendly way.
+- MongoDB: NoSQL database used for storing trip data.
+- Jest: JavaScript testing framework.
+- Supertest: Library for testing Node.js HTTP servers.
+- TypeScript: Strongly typed programming language that builds on JavaScript.
+- Swagger: open-source framework that provides tools to design, document, and interact with RESTful APIs through interactive, auto-generated documentation.
