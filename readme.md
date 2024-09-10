@@ -1,4 +1,4 @@
-# Trip Manager API
+# Trip Planner and Manager API
 
 This is a RESTful API for managing trips. It allows users to create, retrieve, soft delete, and restore trips. The API is built with Node.js, Express, and Typegoose/Mongoose for managing data.
 
@@ -22,3 +22,7 @@ This is a RESTful API for managing trips. It allows users to create, retrieve, s
 ## Installation
 
 ### 1 . Clone the repository
+
+```git clone https://github.com/cesarlamas/trip-planner.git
+  cd trip-planner-api
+```
