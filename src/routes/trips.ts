@@ -12,6 +12,19 @@ const router = express.Router();
  *   get:
  *     summary: Get all trips
  *     description: Retrieve a list of all trips.
+ *     parameters:
+ *       - in: query
+ *         name: origin
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The origin location for the trip.
+ *       - in: query
+ *         name: destination
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The destination location for the trip.
  *     responses:
  *       200:
  *         description: A list of trips.

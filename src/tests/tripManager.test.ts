@@ -20,7 +20,89 @@ const tripData2 = {
 };
 
 describe('TripManager', () => {
-  describe('POST --> /trips', () => {
+  describe('GET --> /trip', () => {
+    it('should return 200 and the trips if found', async () => {
+      const response = await request(app).get('/trips').query({
+        origin: 'OSL',
+        destination: 'ZRH',
+      });
+
+      expect(response.status).toBe(200);
+      expect(response.body.message).toBe('Trips retrieved successfully');
+      expect(response.body.data).not.toBeNull();
+    });
+
+    it('should return 200 and sort it by duration', async () => {
+      const response = await request(app).get('/trips').query({
+        origin: 'OSL',
+        destination: 'ZRH',
+        sortBy: 'fastest',
+      });
+
+      const trips = response.body.data;
+
+      for (let i = 1; i < trips.length; i++) {
+        expect(trips[i].duration).toBeGreaterThan(trips[i - 1].duration);
+      }
+    });
+
+    it('should return 200 and sort it by duration', async () => {
+      const response = await request(app).get('/trips').query({
+        origin: 'OSL',
+        destination: 'ZRH',
+        sortBy: 'cheapest',
+      });
+
+      const trips = response.body.data;
+
+      for (let i = 1; i < trips.length; i++) {
+        expect(trips[i].cost).toBeGreaterThan(trips[i - 1].cost);
+      }
+    });
+
+    it('should return 200 and the trips by car if found', async () => {
+      const response = await request(app).get('/trips').query({
+        origin: 'OSL',
+        destination: 'ZRH',
+        type: 'car',
+      });
+
+      expect(response.status).toBe(200);
+      expect(response.body.message).toBe('Trips retrieved successfully');
+      expect(response.body.data).not.toBeNull();
+    });
+
+    it('should return 400 if origin or destination are missing', async () => {
+      const response = await request(app).get('/trips').query({
+        origin: 'OSL',
+      });
+
+      expect(response.status).toBe(400);
+      expect(response.body.message).toBe('Error: origin and destination are required');
+    });
+
+    it('should return 404 if no trips are found', async () => {
+      const response = await request(app).get('/trips').query({
+        origin: 'ZZZ',
+        destination: 'ZRH',
+      });
+
+      expect(response.status).toBe(404);
+      expect(response.body.message).toBe('No trips found');
+    });
+
+    it('should return 400 if origin or destination has more than 3 charachters', async () => {
+      const response = await request(app).get('/trips').query({
+        origin: 'OSL',
+        destination: 'ZRHS',
+      });
+
+      expect(response.status).toBe(400);
+      expect(response.body.message).toBe('Origin or destination airport not known');
+    });
+  });
+
+  describe('POST --> /trip', () => {
     it('Should save a new trip and return 201 status', async () => {
       const response = await request(app).post('/trip').send(tripData1);
 

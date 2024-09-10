@@ -8,7 +8,7 @@ const API_URL: string = process.env.API_URL as string;
 const API_KEY: string = process.env.API_KEY as string;
 
 class TripPlannerService {
-  async getTrips(origin: string, destination: string, sort_by: string, type: string) {
+  async getTrips(origin: string, destination: string, sortBy: string, type: string) {
     const response = await axios.get(API_URL, {
       headers: {
         'x-api-key': API_KEY,
@@ -21,9 +21,13 @@ class TripPlannerService {
 
     let trips = response.data;
 
-    trips = sortTrips(trips, sort_by);
+    if (sortBy) {
+      trips = sortTrips(trips, sortBy);
+    }
 
-    trips = filterByTransportType(trips, type);
+    if (type) {
+      trips = filterByTransportType(trips, type);
+    }
 
     return trips;
   }
