@@ -23,7 +23,7 @@ class TripManagerController {
       const tripAlreadyExists: Trip[] | null = await tripManagerService.getTripByOriginAndDestination(origin, destination);
 
       if (tripAlreadyExists && tripAlreadyExists.length > 0) {
-        return res.status(409).json({ message: 'Trip already exists' }); // 409 Conflict for existing trip
+        return res.status(409).json({ message: 'Trip already exists' });
       }
 
       const savedTrip = await tripManagerService.saveNewTrip(origin, destination, duration, cost, type, display_name);
