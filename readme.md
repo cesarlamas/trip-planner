@@ -4,11 +4,12 @@ This is a RESTful API for managing trips. It allows users to create, retrieve, s
 
 ## Features
 
-1. Create Trip: Save a new trip with details like origin, destination, duration, cost and transport Type.
-2. Retrieve Trips: Fetch all saved trips.
-3. Soft Delete Trip: Mark a trip as deleted without permanently removing it from the database.
-4. Restore Trip: Restore a soft-deleted trip.
-5. Validation: Ensures that all required fields are present before saving a new trip.
+1. Get external api trips: Call external api and get trips.
+2. Create Trip: Save a new trip with details like origin, destination, duration, cost and transport Type.
+3. Retrieve Trips: Fetch all saved trips.
+4. Soft Delete Trip: Mark a trip as deleted without permanently removing it from the database.
+5. Restore Trip: Restore a soft-deleted trip.
+6. Validation: Ensures that all required fields are present before saving a new trip.
 
 ## Table of contents
 
@@ -33,8 +34,10 @@ This is a RESTful API for managing trips. It allows users to create, retrieve, s
 
 Create .env folder in the root of your project and add:
 
-MONGO_URI=<Your MongoDB URI>
+MONGOURI=<Your MongoDB URI>
 PORT=3000
+API_URL
+API_KEY
 
 Make sure to replace your mongoDb uri
 
@@ -59,7 +62,7 @@ The app will be running in the port http://localhost:3000
 | Method | Endpoint                   | Description                          | Parameters                                                   |
 | ------ | -------------------------- | ------------------------------------ | ------------------------------------------------------------ |
 | `GET`  | `/trips`                   | Call external api and retrieve trips | Required: `origin` and `destination`                         |
-| `POST` | `/trips`                   | Create a new trip                    | Required:`origin`, `destination`, `duration`, `cost`, `type` |
+| `POST` | `/trip`                    | Create a new trip                    | Required:`origin`, `destination`, `duration`, `cost`, `type` |
 | `GET`  | `/trips/saved`             | Retrieve all saved trips             | None                                                         |
 | `PUT`  | `/trips/delete/:id`        | Soft delete a trip by ID             | Required:`id`                                                |
 | `PUT`  | `/trips/saved/:id/restore` | Restore a soft-deleted trip by ID    | Required:`id`                                                |

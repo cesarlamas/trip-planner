@@ -1,16 +1,13 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import tripsRouter from './routes/trips';
-import router from './routes/trips';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import { connectDB } from './config/db';
 const app = express();
 
-const mongoUri: string = 'mongodb://localhost:27017/trip-service';
-
 dotenv.config();
-connectDB(mongoUri);
+connectDB(process.env.MONGOURI as string);
 
 // Swagger connection and info
 const options = {
@@ -31,7 +28,7 @@ const swaggerSpec = swaggerJSDoc(options);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use(express.json());
-app.use('/', tripsRouter);
+app.use(tripsRouter);
 
 const PORT = process.env.PORT || 3000;
 
