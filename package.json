@@ -6,7 +6,7 @@
     "start": "node dist/index.js",
     "build": "tsc",
     "dev": "ts-node src/index.ts",
-    "test": "jest --detectOpenHandles",
+    "test": "jest",
     "test:watch": "jest --watch"
   },
   "keywords": [],

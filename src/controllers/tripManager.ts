@@ -1,13 +1,14 @@
 import { Request, Response } from 'express';
 import tripManagerService from '../services/tripManager';
 import { Trip } from '../models/tripModel';
+import { createDisplayName } from '../utils/tripUtils';
 
 class TripManagerController {
   async saveTrip(req: Request, res: Response) {
-    const { origin, destination, duration, cost, type, display_name } = req.body;
+    const { origin, destination, duration, cost, type } = req.body;
 
-    if (!origin || !destination || !duration || !cost || !type || !display_name) {
-      const msg: string = 'Missing required parameter trip ==> origin, destination, duration, cost, type, display_name is required';
+    if (!origin || !destination || !duration || !cost || !type) {
+      const msg: string = 'Missing required parameter trip ==> origin, destination, duration, cost, type is required';
       return res.status(400).json({ message: msg });
     }
 
@@ -16,11 +17,13 @@ class TripManagerController {
       return res.status(400).json({ message: msg });
     }
 
+    const display_name: string = createDisplayName(origin, destination, type);
+
     try {
       const tripAlreadyExists: Trip[] | null = await tripManagerService.getTripByOriginAndDestination(origin, destination);
 
       if (tripAlreadyExists && tripAlreadyExists.length > 0) {
-        return res.status(409).json({ message: 'Trip already exists' }); // 409 Conflict for existing trip
+        return res.status(409).json({ message: 'Trip already exists' });
       }
 
       const savedTrip = await tripManagerService.saveNewTrip(origin, destination, duration, cost, type, display_name);
@@ -73,7 +76,6 @@ class TripManagerController {
         message: 'Saved Trip Deleted',
       });
     } catch (error) {
-      console.error('Error deleting trip:', error);
       return res.status(500).json({
         message: 'Error deleting trip',
       });

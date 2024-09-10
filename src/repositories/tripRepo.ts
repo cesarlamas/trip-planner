@@ -25,7 +25,11 @@ export class TripManagerRepository {
   }
 
   async getTripByOriginAndDestination(origin: string, destination: string): Promise<Trip[]> {
-    return await TripModel.find({ origin: origin, destination: destination, isDeleted: false });
+    try {
+      return await TripModel.find({ origin: origin, destination: destination, isDeleted: false });
+    } catch (error) {
+      throw new Error('Failed to fetch trip By origin and destination');
+    }
   }
 
   async softDeleteSavedTrip(id: string): Promise<Trip | null> {
