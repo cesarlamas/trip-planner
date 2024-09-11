@@ -1,4 +1,4 @@
-import { Trip } from '../models/tripModel';
+import { Trip } from '../../models/tripModel';
 
 export interface ITripManagerService {
   saveNewTrip(trip: Partial<Trip>): Promise<Trip>;

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { sortTrips, filterByTransportType } from '../utils/tripUtils';
 import dotenv from 'dotenv';
-import { ITripPlannerService } from '../services/ItripPlanner';
+import { ITripPlannerService } from './interfaces/ItripPlanner';
 import { Trip } from '../models/tripModel';
 
 dotenv.config();

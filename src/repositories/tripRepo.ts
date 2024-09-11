@@ -1,4 +1,4 @@
-import { ITripRepo } from './ItripRepo';
+import { ITripRepo } from './interfaces/ItripRepo';
 import { Trip, TripModel } from '../models/tripModel';
 
 export class TripRepo implements ITripRepo {

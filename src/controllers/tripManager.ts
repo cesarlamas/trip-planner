@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import { ITripManagerService } from '../services/ItripManager';
+import { ITripManagerService } from '../services/interfaces/ItripManager';
 import { Trip, TripModel } from '../models/tripModel';
 import { createDisplayName } from '../utils/tripUtils';
-import { ITripManagerController } from './ItripManager';
+import { ITripManagerController } from './interfaces/ItripManager';
 
 export class TripManagerController implements ITripManagerController {
   private tripManagerService: ITripManagerService;

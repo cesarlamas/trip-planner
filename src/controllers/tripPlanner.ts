@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { Trip } from '../models/tripModel';
-import { ITripPlannerService } from '../services/ItripPlanner';
-import { ITripPlannerController } from './ItripPlanner';
+import { ITripPlannerService } from '../services/interfaces/ItripPlanner';
+import { ITripPlannerController } from './interfaces/ItripPlanner';
 
 export class TripPlannerController implements ITripPlannerController {
   private tripPlannerService: ITripPlannerService;
@@ -14,7 +14,14 @@ export class TripPlannerController implements ITripPlannerController {
     const { origin, destination, sortBy, type } = req.query;
 
     if (!origin || !destination) {
-      res.status(400).json({ message: 'Origin and destination are required' });
+      const msg = 'Error: origin and destination are required';
+      res.status(400).json({ message: msg });
+      return;
+    }
+
+    if (origin.length !== 3 || destination.length !== 3) {
+      const msg: string = 'Origin or destination airport not known';
+      res.status(400).json({ message: msg });
       return;
     }
 

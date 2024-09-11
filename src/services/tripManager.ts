@@ -1,6 +1,6 @@
-import { ITripManagerService } from './ItripManager';
+import { ITripManagerService } from './interfaces/ItripManager';
 import { Trip } from '../models/tripModel';
-import { ITripRepo } from '../repositories/ItripRepo';
+import { ITripRepo } from '../repositories/interfaces/ItripRepo';
 
 export class TripManagerService implements ITripManagerService {
   private tripRepository: ITripRepo;
