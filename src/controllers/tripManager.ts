@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { ITripManagerService } from '../services/interfaces/ItripManager';
-import { Trip, TripModel } from '../models/tripModel';
+import { Trip } from '../models/tripModel';
 import { createDisplayName } from '../utils/tripUtils';
 import { ITripManagerController } from './interfaces/ItripManager';
 
