@@ -295,7 +295,7 @@ describe('TripManager', () => {
     });
 
     it('Should return 500 when trip with given id does not exist', async () => {
-      const nonExistentId = '60d21b4667d0d8992e610c85';
+      const nonExistentId = '60d21b4667d0d8992e610c85f';
       const response = await request(app).delete(`/trips/delete/${nonExistentId}`);
 
       expect(response.status).toBe(500);

@@ -1,7 +1,16 @@
 import express from 'express';
-import tripPlannerController from '../controllers/tripPlanner';
-import tripManagerController from '../controllers/tripManager';
+import { TripPlannerController } from '../controllers/tripPlanner';
+import { TripPlannerService } from '../services/tripPlanner';
+import { TripManagerController } from '../controllers/tripManager';
+import { TripManagerService } from '../services/tripManager';
+import { TripRepo } from '../repositories/tripRepo';
 
+const tripRepo = new TripRepo();
+const tripManagerService = new TripManagerService(tripRepo);
+const tripManagerController = new TripManagerController(tripManagerService);
+
+const tripPlannerService = new TripPlannerService();
+const tripPlannerController = new TripPlannerController(tripPlannerService);
 const router = express.Router();
 
 // **************************** TRIP PLANNER ROUTES ********************************
@@ -11,7 +20,7 @@ const router = express.Router();
  * /trips:
  *   get:
  *     summary: Get all trips
- *     description: Retrieve a list of all trips.
+ *     description: Retrieve a list of all trips with optional sorting and filtering by transport type.
  *     parameters:
  *       - in: query
  *         name: origin
@@ -25,6 +34,19 @@ const router = express.Router();
  *           type: string
  *         required: true
  *         description: The destination location for the trip.
+ *       - in: query
+ *         name: sortBy
+ *         schema:
+ *           type: string
+ *           enum: [fastest, cheapest]
+ *         required: false
+ *         description: Sort trips by fastest or cheapest.
+ *       - in: query
+ *         name: type
+ *         schema:
+ *           type: string
+ *         required: false
+ *         description: Filter trips by transport type.
  *     responses:
  *       200:
  *         description: A list of trips.
@@ -35,7 +57,7 @@ const router = express.Router();
  *               items:
  *                 $ref: '#/components/schemas/Trip'
  */
-router.get('/trips', tripPlannerController.getTrips);
+router.get('/trips', (req, res) => tripPlannerController.getTrips(req, res));
 
 // **************************** TRIP MANAGER ROUTES ********************************
 
@@ -55,7 +77,7 @@ router.get('/trips', tripPlannerController.getTrips);
  *       201:
  *         description: Trip created successfully.
  */
-router.post('/trip', tripManagerController.saveTrip); // Save a new trip
+router.post('/trip', (req, res) => tripManagerController.saveTrip(req, res));
 
 /**
  * @swagger
@@ -73,7 +95,7 @@ router.post('/trip', tripManagerController.saveTrip); // Save a new trip
  *               items:
  *                 $ref: '#/components/schemas/Trip'
  */
-router.get('/trips/saved', tripManagerController.getAllSavedTrips); // Get all saved trips
+router.get('/trips/saved', (req, res) => tripManagerController.getAllSavedTrips(req, res)); // Get all saved trips
 
 /**
  * @swagger
@@ -92,7 +114,7 @@ router.get('/trips/saved', tripManagerController.getAllSavedTrips); // Get all s
  *       200:
  *         description: Trip soft-deleted successfully.
  */
-router.delete('/trips/delete/:id', tripManagerController.softDeleteSavedTrip); // Soft delete a saved trip
+router.delete('/trips/delete/:id', (req, res) => tripManagerController.softDeleteSavedTrip(req, res));
 
 /**
  * @swagger
@@ -111,6 +133,6 @@ router.delete('/trips/delete/:id', tripManagerController.softDeleteSavedTrip); /
  *       200:
  *         description: Trip restored successfully.
  */
-router.patch('/trips/saved/:id/restore', tripManagerController.restoreDeletedTrip); // Restore a soft-deleted trip
+router.patch('/trips/saved/:id/restore', (req, res) => tripManagerController.restoreDeletedTrip(req, res));
 
 export default router;

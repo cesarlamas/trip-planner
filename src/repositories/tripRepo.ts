@@ -1,62 +1,24 @@
-import { Types } from 'mongoose';
-import { TripModel, Trip } from '../models/tripModel';
-export class TripManagerRepository {
-  async saveNewTrip(origin: string, destination: string, duration: number, cost: number, type: string, display_name: string): Promise<Trip> {
-    try {
-      return await TripModel.create({
-        origin,
-        destination,
-        duration,
-        cost,
-        type,
-        display_name,
-      });
-    } catch (error) {
-      throw new Error('Failed to save new trip');
-    }
+import { ITripRepo } from './ItripRepo';
+import { Trip, TripModel } from '../models/tripModel';
+
+export class TripRepo implements ITripRepo {
+  async saveNewTrip(trip: Partial<Trip>): Promise<Trip> {
+    return await TripModel.create(trip);
   }
 
   async getAllSavedTrips(): Promise<Trip[]> {
-    try {
-      return await TripModel.find({ isDeleted: false });
-    } catch (error) {
-      throw new Error('Failed to fetch trips');
-    }
+    return await TripModel.find({ isDeleted: false }).exec();
   }
 
-  async getTripByOriginAndDestination(origin: string, destination: string): Promise<Trip[]> {
-    try {
-      return await TripModel.find({ origin: origin, destination: destination, isDeleted: false });
-    } catch (error) {
-      throw new Error('Failed to fetch trip By origin and destination');
-    }
+  async getTripByOriginAndDestination(origin: string, destination: string): Promise<Trip[] | null> {
+    return await TripModel.find({ origin, destination, isDeleted: false }).exec();
   }
 
   async softDeleteSavedTrip(id: string): Promise<Trip | null> {
-    try {
-      const objectId = new Types.ObjectId(id);
-      const result = await TripModel.findByIdAndUpdate(objectId, { isDeleted: true }, { new: true });
-      if (!result) {
-        throw new Error('Trip not found');
-      }
-      return result;
-    } catch (error) {
-      throw new Error('Failed to soft delete trip');
-    }
+    return await TripModel.findByIdAndUpdate(id, { isDeleted: true, deletedAt: new Date() }, { new: true });
   }
 
-  async restoreDeletedTrips(id: string): Promise<Trip | null> {
-    try {
-      const objectId = new Types.ObjectId(id);
-      const result = await TripModel.findByIdAndUpdate(objectId, { isDeleted: false }, { new: true });
-      if (!result) {
-        throw new Error('Trip not found');
-      }
-      return result;
-    } catch (error) {
-      throw new Error('Failed to restore trip');
-    }
+  async restoreDeletedTrip(id: string): Promise<Trip | null> {
+    return await TripModel.findByIdAndUpdate(id, { isDeleted: false, deletedAt: null }, { new: true });
   }
 }
-
-export default new TripManagerRepository();

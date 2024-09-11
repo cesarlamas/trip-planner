@@ -17,7 +17,8 @@ This is a RESTful API for managing trips. It allows users to create, retrieve, s
 2. Environment variables
 3. API endpoints
 4. Running tests
-5. Technologies used
+5. Swagger documentation
+6. Technologies used
 
 ## Installation
 
@@ -74,6 +75,18 @@ To run the tests, use the following command:
 `npm test`
 
 Test are created using Jest and Supertest for testing the Api endpoints.
+
+## Swagger documentation
+
+The entire application is documented using Swagger. Once the application is running, you can access the API documentation by navigating to:
+
+`http://localhost:3000/api-docs'
+Here, you will find detailed information about the API, including:
+
+Endpoint definitions: Each available API endpoint with descriptions, required parameters, and response formats.
+Schemas: Definitions of data models used in the API, such as the Trip schema.
+Examples: Request and response examples for each endpoint, demonstrating how to interact with the API.
+This interactive documentation also allows you to test the different API endpoints directly in your browser.
 
 ## Technologies Used
 
