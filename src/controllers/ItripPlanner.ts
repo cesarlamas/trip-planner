@@ -1,5 +1,5 @@
-import { Trip } from '../models/tripModel';
+import { Request, Response } from 'express';
 
 export interface ITripPlannerController {
-  getTrips(filter: Partial<Trip>, sortBy?: string, type?: string): Promise<Trip[]>;
+  getTrips(req: Request, res: Response): Promise<void>;
 }
