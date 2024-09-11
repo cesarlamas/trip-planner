@@ -1,7 +1,7 @@
 // src/tests/tripController.test.ts
 import request from 'supertest';
-import app from '../index';
-import { TripModel } from '../models/tripModel';
+import app from '../src/index';
+import { TripModel } from '../src/models/tripModel';
 
 const tripData1 = {
   origin: 'OSL',
@@ -278,12 +278,12 @@ describe('TripManager', () => {
     });
   });
 
-  describe('PUT --> /trips/delete/:id && /trips/saved/:id/restore', () => {
-    it('should successfully soft delete a trip and return 200 status', async () => {
+  describe('DELETE --> /trips/delete/:id', () => {
+    it('Should successfully soft delete a trip and return 200 status', async () => {
       const newTrip = await request(app).post('/trip').send(tripData1);
       const savedIdNewTrip = newTrip.body.data._id;
 
-      const response = await request(app).put(`/trips/delete/${savedIdNewTrip.toString()}`);
+      const response = await request(app).delete(`/trips/delete/${savedIdNewTrip.toString()}`);
 
       expect(response.status).toBe(200);
       expect(response.body.message).toBe('Saved Trip Deleted');
@@ -294,23 +294,35 @@ describe('TripManager', () => {
       await TripModel.findByIdAndDelete(savedIdNewTrip);
     });
 
-    it('should return 500 when trip with given id does not exist', async () => {
+    it('Should return 500 when trip with given id does not exist', async () => {
       const nonExistentId = '60d21b4667d0d8992e610c85';
-      const response = await request(app).put(`/trips/delete/${nonExistentId}`);
+      const response = await request(app).delete(`/trips/delete/${nonExistentId}`);
 
       expect(response.status).toBe(500);
       expect(response.body.message).toBe('Error deleting trip');
     });
-
-    it('Should restore soft deleted trip and return a 200 status', async () => {
+  });
+  describe('PATCH --> /trips/saved/:id/restore', () => {
+    it('Should successfully soft delete a trip and return 200 status', async () => {
       const newTrip = await request(app).post('/trip').send(tripData1);
       const savedIdNewTrip = newTrip.body.data._id;
 
-      await request(app).put(`/trips/saved/${savedIdNewTrip.toString()}`);
-      const restoredDeletedTrip = await request(app).put(`/trips/saved/${savedIdNewTrip}/restore`);
+      await request(app).delete(`/trips/delete/${savedIdNewTrip.toString()}`);
+      const response = await request(app).patch(`/trips/saved/${savedIdNewTrip.toString()}/restore`);
 
-      expect(restoredDeletedTrip.status).toBe(200);
+      expect(response.status).toBe(200);
+      expect(response.body.message).toBe('Deleted trip restored');
+
+      const deletedTrip = await TripModel.findById(savedIdNewTrip);
+      expect(deletedTrip?.isDeleted).toBe(false);
+
       await TripModel.findByIdAndDelete(savedIdNewTrip);
+    });
+    it('Should restore soft deleted trip and return a 200 status', async () => {
+      const response = await request(app).patch(`/trips/saved/33453534654/restore`);
+
+      expect(response.status).toBe(500);
+      expect(response.body.message).toBe('Error restoring trip');
     });
   });
 });

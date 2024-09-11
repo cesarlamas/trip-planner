@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-
 let isConnected = false; // Tracks if the connection has been established
 
 export const connectDB = async (uri: string) => {

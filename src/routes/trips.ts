@@ -78,7 +78,7 @@ router.get('/trips/saved', tripManagerController.getAllSavedTrips); // Get all s
 /**
  * @swagger
  * /trips/delete/{id}:
- *   put:
+ *   delete:
  *     summary: Soft delete a saved trip
  *     description: Soft delete a trip by marking it as deleted.
  *     parameters:
@@ -92,12 +92,12 @@ router.get('/trips/saved', tripManagerController.getAllSavedTrips); // Get all s
  *       200:
  *         description: Trip soft-deleted successfully.
  */
-router.put('/trips/delete/:id', tripManagerController.softDeleteSavedTrip); // Soft delete a saved trip
+router.delete('/trips/delete/:id', tripManagerController.softDeleteSavedTrip); // Soft delete a saved trip
 
 /**
  * @swagger
  * /trips/saved/{id}/restore:
- *   put:
+ *   patch:
  *     summary: Restore a soft-deleted trip
  *     description: Restore a soft-deleted trip by marking it as active.
  *     parameters:
@@ -111,6 +111,6 @@ router.put('/trips/delete/:id', tripManagerController.softDeleteSavedTrip); // S
  *       200:
  *         description: Trip restored successfully.
  */
-router.put('/trips/saved/:id/restore', tripManagerController.restoreDeletedTrip); // Restore a soft-deleted trip
+router.patch('/trips/saved/:id/restore', tripManagerController.restoreDeletedTrip); // Restore a soft-deleted trip
 
 export default router;
