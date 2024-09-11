@@ -1,13 +1,14 @@
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { connectDB, disconnectDB } from './src/config/db';
-
 let mongoServer: MongoMemoryServer;
+import { configDotenv } from 'dotenv';
+
+configDotenv();
 
 beforeAll(async () => {
   mongoServer = await MongoMemoryServer.create();
-  const uri = mongoServer.getUri();
 
-  await connectDB(uri);
+  await connectDB(process.env.MONGOURITEST as string);
 });
 
 afterAll(async () => {
